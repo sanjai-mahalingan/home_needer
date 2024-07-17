@@ -1,9 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:home_needer/ui/auth/index_view.dart';
+import 'package:home_needer/ui/auth/login_view.dart';
+import 'firebase_options.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_needer/ui/auth/registration_view.dart';
 import 'package:home_needer/ui/initial_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -19,7 +27,7 @@ class MainApp extends ConsumerWidget {
         textTheme: TextTheme(
           // app bar title
           displayLarge: const TextStyle(
-              fontSize: 34, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
 
           // headlines
           titleLarge:
@@ -36,6 +44,9 @@ class MainApp extends ConsumerWidget {
       initialRoute: 'initialView',
       routes: {
         "initialView": (context) => const InitialView(),
+        "registrationView": (context) => const RegistrationView(),
+        "loginView": (context) => const LoginView(),
+        "indexView": (context) => const IndexView()
       },
     );
   }

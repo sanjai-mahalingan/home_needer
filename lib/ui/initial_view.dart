@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_needer/widgets/loader_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final userSession = StateProvider<User?>((ref) => null);
 
 class InitialView extends ConsumerStatefulWidget {
   const InitialView({super.key});
@@ -10,6 +13,20 @@ class InitialView extends ConsumerStatefulWidget {
 }
 
 class _InitialView extends ConsumerState<InitialView> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        ref.read(userSession.notifier).state = null;
+        Navigator.popAndPushNamed(context, 'loginView');
+      } else {
+        ref.read(userSession.notifier).state = user;
+        Navigator.popAndPushNamed(context, 'indexView');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
