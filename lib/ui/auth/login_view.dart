@@ -82,7 +82,10 @@ class _LoginView extends ConsumerState<LoginView> {
                     children: [
                       TextFormField(
                         decoration: const InputDecoration(
-                          label: Text('Email'),
+                          label: Text(
+                            'Email',
+                            style: TextStyle(color: Colors.white60),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -100,7 +103,10 @@ class _LoginView extends ConsumerState<LoginView> {
                       TextFormField(
                         obscureText: true,
                         decoration: const InputDecoration(
-                          label: Text('Password'),
+                          label: Text(
+                            'Password',
+                            style: TextStyle(color: Colors.white60),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {

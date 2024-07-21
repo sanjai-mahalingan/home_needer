@@ -19,7 +19,7 @@ class _InitialView extends ConsumerState<InitialView> {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         ref.read(userSession.notifier).state = null;
-        Navigator.popAndPushNamed(context, 'registrationView');
+        Navigator.popAndPushNamed(context, 'loginView');
       } else {
         ref.read(userSession.notifier).state = user;
         Navigator.popAndPushNamed(context, 'indexView');

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_needer/ui/initial_view.dart';
 
 class RegistrationView extends ConsumerStatefulWidget {
   const RegistrationView({super.key});
@@ -22,6 +24,24 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
       setState(() {
         isLoading = true;
       });
+      try {
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: email.text, password: password.text)
+            .then((UserCredential userCredential) {
+          FirebaseAuth.instance.authStateChanges().listen((User? user) {
+            setState(() {
+              isLoading = false;
+            });
+            if (user != null) {
+              ref.read(userSession.notifier).state = user;
+              Navigator.popAndPushNamed(context, 'indexView');
+            }
+          });
+        });
+      } on FirebaseAuthException catch (e) {
+        print('>>>>>>>>>>error: $e');
+      }
     } else {
       setState(() {
         isLoading = false;
@@ -81,8 +101,12 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: email,
                         decoration: const InputDecoration(
-                          label: Text('Email'),
+                          label: Text(
+                            'Email',
+                            style: TextStyle(color: Colors.white60),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -98,16 +122,20 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                         height: 10,
                       ),
                       TextFormField(
+                        controller: password,
                         obscureText: true,
                         decoration: const InputDecoration(
-                          label: Text('Password'),
+                          label: Text(
+                            'Password',
+                            style: TextStyle(color: Colors.white60),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Password is required";
                           }
                           if (value.isNotEmpty && value.length <= 6) {
-                            return "Password must contains minimum 6 characters";
+                            return "Password must contains minimum 7 characters";
                           }
                           return null;
                         },
