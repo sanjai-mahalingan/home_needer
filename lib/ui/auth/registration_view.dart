@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_needer/ui/initial_view.dart';
+import 'package:home_needer/widgets/loader_view.dart';
 
 class RegistrationView extends ConsumerStatefulWidget {
   const RegistrationView({super.key});
@@ -12,6 +14,8 @@ class RegistrationView extends ConsumerStatefulWidget {
 
 class _RegistrationView extends ConsumerState<RegistrationView> {
   final _formKey = GlobalKey<FormState>();
+  FirebaseFirestore storage_ref = FirebaseFirestore.instance;
+
   bool isLoading = false;
   final RegExp emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -25,27 +29,88 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
         isLoading = true;
       });
       try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: email.text, password: password.text)
-            .then((UserCredential userCredential) {
-          FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email.text, password: password.text);
+
+        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+          if (user != null) {
+            ref.read(userSession.notifier).state = user;
+
+            var profileData = {
+              "uid": user.uid,
+              "imageURL": '',
+              "displayName": '',
+              "primaryPhone": '',
+              "secondaryPhone": '',
+              "addressLine1": '',
+              "addressLine2": '',
+              "city": '',
+              "state": '',
+              "zipCode": '',
+              "country": '',
+              "createdOn": DateTime.now()
+            };
+
+            storage_ref.collection('profiles').doc(user.uid).set(profileData);
             setState(() {
               isLoading = false;
             });
-            if (user != null) {
-              ref.read(userSession.notifier).state = user;
-              Navigator.popAndPushNamed(context, 'indexView');
-            }
-          });
+            Navigator.popAndPushNamed(context, 'indexView');
+            return;
+          }
         });
       } on FirebaseAuthException catch (e) {
-        print('>>>>>>>>>>error: $e');
+        if (mounted && e.code == 'invalid-email') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: const Text('The email address is badly formatted.'),
+              backgroundColor: Colors.red,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height - 100,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
+        if (mounted && e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: const Text('Email already registered'),
+              backgroundColor: Colors.red,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height - 100,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
       }
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: const Text('Something went wrong. Try later'),
+          backgroundColor: Colors.red,
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 100,
+              right: 20,
+              left: 20),
+        ),
+      );
       setState(() {
         isLoading = false;
       });
+      return;
     }
   }
 
@@ -102,6 +167,10 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                     children: [
                       TextFormField(
                         controller: email,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 156, 105, 16)),
+                        textInputAction: TextInputAction.next,
                         decoration: const InputDecoration(
                           label: Text(
                             'Email',
@@ -124,6 +193,9 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                       TextFormField(
                         controller: password,
                         obscureText: true,
+                        textInputAction: TextInputAction.done,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 156, 105, 16)),
                         decoration: const InputDecoration(
                           label: Text(
                             'Password',
@@ -143,15 +215,17 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          onRegistration();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white12,
-                            foregroundColor: Colors.blueGrey),
-                        child: const Text('Register Now'),
-                      ),
+                      isLoading
+                          ? const LoaderView(size: 34)
+                          : ElevatedButton(
+                              onPressed: () {
+                                onRegistration();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white12,
+                                  foregroundColor: Colors.blueGrey),
+                              child: const Text('Register Now'),
+                            ),
                       const SizedBox(
                         height: 50,
                       ),

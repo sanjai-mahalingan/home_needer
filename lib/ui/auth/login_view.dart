@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_needer/ui/initial_view.dart';
+import 'package:home_needer/widgets/loader_view.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -22,6 +25,56 @@ class _LoginView extends ConsumerState<LoginView> {
       setState(() {
         isLoading = true;
       });
+      try {
+        final userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: email.text, password: password.text);
+        ref.read(userSession.notifier).state = userCredential.user;
+        setState(() {
+          isLoading = false;
+        });
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, 'indexView');
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted && e.code == 'invalid-email') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Enter valid email'),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height - 100,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
+
+        if (mounted &&
+            (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
+                e.code == 'invalid-credential')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Email or password is not valid.'),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height - 100,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
+      }
     } else {
       setState(() {
         isLoading = false;
@@ -81,6 +134,11 @@ class _LoginView extends ConsumerState<LoginView> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: email,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 156, 105, 16)),
+                        textInputAction: TextInputAction.next,
                         decoration: const InputDecoration(
                           label: Text(
                             'Email',
@@ -101,7 +159,11 @@ class _LoginView extends ConsumerState<LoginView> {
                         height: 10,
                       ),
                       TextFormField(
+                        controller: password,
                         obscureText: true,
+                        textInputAction: TextInputAction.done,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 156, 105, 16)),
                         decoration: const InputDecoration(
                           label: Text(
                             'Password',
@@ -121,15 +183,17 @@ class _LoginView extends ConsumerState<LoginView> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          onLogin();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white12,
-                            foregroundColor: Colors.blueGrey),
-                        child: const Text('Login'),
-                      ),
+                      isLoading
+                          ? const LoaderView(size: 34)
+                          : ElevatedButton(
+                              onPressed: () {
+                                onLogin();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white12,
+                                  foregroundColor: Colors.blueGrey),
+                              child: const Text('Login'),
+                            ),
                       const SizedBox(
                         height: 50,
                       ),
