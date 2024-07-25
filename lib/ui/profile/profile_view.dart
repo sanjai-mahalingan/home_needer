@@ -183,7 +183,7 @@ class _ProfileView extends ConsumerState<ProfileView> {
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.phone,
                               style: const TextStyle(
-                                color: Colors.white,``
+                                color: Colors.white,
                               ),
                               decoration: const InputDecoration(
                                 label: Text(
