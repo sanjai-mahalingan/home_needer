@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_needer/ui/initial_view.dart';
+import 'package:home_needer/ui/profile/profile_view.dart';
 
 class SideNav extends ConsumerStatefulWidget {
   const SideNav({super.key, required this.user});
@@ -67,7 +68,9 @@ class _SideNav extends ConsumerState<SideNav> {
                   ),
                   IconButton.outlined(
                     onPressed: () {
-                      Navigator.popAndPushNamed(context, 'profileView');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) =>
+                              ProfileView(userId: widget.user!.uid)));
                     },
                     icon: const Icon(Icons.account_circle_outlined),
                     color: Colors.white,

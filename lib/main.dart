@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:home_needer/ui/auth/index_view.dart';
+import 'package:home_needer/ui/index_view.dart';
 import 'package:home_needer/ui/auth/login_view.dart';
+import 'package:home_needer/ui/profile/profile_view.dart';
 import 'firebase_options.dart';
 
 import 'package:flutter/material.dart';
@@ -46,7 +47,10 @@ class MainApp extends ConsumerWidget {
         "initialView": (context) => const InitialView(),
         "registrationView": (context) => const RegistrationView(),
         "loginView": (context) => const LoginView(),
-        "indexView": (context) => const IndexView()
+        "indexView": (context) => const IndexView(),
+        "profileView": (context) => const ProfileView(
+              userId: '',
+            ),
       },
     );
   }

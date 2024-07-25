@@ -22,6 +22,7 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController displayName = TextEditingController();
 
   onRegistration() async {
     if (_formKey.currentState!.validate()) {
@@ -39,7 +40,7 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
             var profileData = {
               "uid": user.uid,
               "imageURL": '',
-              "displayName": '',
+              "displayName": displayName.text,
               "primaryPhone": '',
               "secondaryPhone": '',
               "addressLine1": '',
@@ -47,7 +48,7 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
               "city": '',
               "state": '',
               "zipCode": '',
-              "country": '',
+              "country": 'India',
               "createdOn": DateTime.now()
             };
 
@@ -55,7 +56,7 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
             setState(() {
               isLoading = false;
             });
-            Navigator.popAndPushNamed(context, 'indexView');
+            Navigator.pushReplacementNamed(context, 'indexView');
             return;
           }
         });
@@ -165,6 +166,26 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      TextFormField(
+                        controller: displayName,
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        decoration: const InputDecoration(
+                          label: Text(
+                            "Display Name",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Enter name to display";
+                          }
+                          if (value.isNotEmpty && value.length <= 3) {
+                            return "Name should be minimum 4 characters";
+                          }
+                          return null;
+                        },
+                      ),
                       TextFormField(
                         controller: email,
                         keyboardType: TextInputType.emailAddress,
