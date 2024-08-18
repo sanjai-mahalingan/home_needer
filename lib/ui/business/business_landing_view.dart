@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_needer/ui/initial_view.dart';
 import 'package:home_needer/widgets/go_to_home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:home_needer/widgets/gradient_container_view.dart';
+import 'package:home_needer/widgets/business_landing_container_view.dart';
 
 class BusinessLandingView extends ConsumerStatefulWidget {
   BusinessLandingView({super.key});
@@ -20,6 +20,10 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
       Color.fromARGB(255, 33, 170, 170)
     ],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
+  void onNavigation(BuildContext context, String routerName) {
+    Navigator.pushNamed(context, routerName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +85,9 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
+                  onNavigation: () {
+                    onNavigation(context, 'houseEssentialView');
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -95,6 +102,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
+                  onNavigation: () {},
                 ),
                 const SizedBox(
                   height: 10,
@@ -109,6 +117,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
+                  onNavigation: () {},
                 ),
                 const SizedBox(
                   height: 10,
@@ -123,6 +132,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
+                  onNavigation: () {},
                 ),
                 const SizedBox(
                   height: 10,
@@ -137,6 +147,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
+                  onNavigation: () {},
                 ),
               ],
             ),

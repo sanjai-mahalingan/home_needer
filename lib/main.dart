@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:home_needer/ui/business/business_landing_view.dart';
+import 'package:home_needer/ui/business/create_business/house_essentials_view.dart';
 import 'package:home_needer/ui/index_view.dart';
 import 'package:home_needer/ui/auth/login_view.dart';
 import 'package:home_needer/ui/profile/profile_view.dart';
@@ -56,6 +57,9 @@ class MainApp extends ConsumerWidget {
               userId: '',
             ),
         "businessLandingView": (context) => BusinessLandingView(),
+        "houseEssentialView": (context) => const HouseEssentialsView(
+              businessID: "",
+            )
       },
     );
   }
