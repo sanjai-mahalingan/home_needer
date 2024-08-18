@@ -12,19 +12,19 @@ import 'package:home_needer/ui/initial_view.dart';
 import 'package:home_needer/widgets/go_to_home_view.dart';
 import 'package:home_needer/widgets/loader_view.dart';
 
-class HouseEssentialsView extends ConsumerStatefulWidget {
-  const HouseEssentialsView({super.key, required this.businessID});
+class CreateEventView extends ConsumerStatefulWidget {
+  const CreateEventView({super.key, required this.businessId});
 
-  final String businessID;
+  final String businessId;
 
   @override
-  ConsumerState<HouseEssentialsView> createState() => _HouseEssentialsView();
+  ConsumerState<CreateEventView> createState() => _CreateEventView();
 }
 
-class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
+class _CreateEventView extends ConsumerState<CreateEventView> {
   final _formKey = GlobalKey<FormState>();
-  FilePickerResult? fileResult;
   bool isLoading = false;
+  FilePickerResult? fileResult;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storageRef = FirebaseStorage.instance;
 
@@ -37,9 +37,8 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
   File? imageFile;
   String? networkImageFile;
 
-// Form Variables
-  String selectedBusinessType = 'Contractors';
-  // String selectedCountry = 'India';
+  // Form Variables
+  String selectedBusinessType = 'Photography';
   String? selectedState = 'Tamil Nadu';
   TextEditingController businessName = TextEditingController();
   TextEditingController contactPhone = TextEditingController();
@@ -88,7 +87,7 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
       if (imageFile != null) {
         newImageFile = DateTime.now().millisecondsSinceEpoch.toString();
         final storageRef_ =
-            storageRef.ref().child('houseEssentials/$newImageFile.jpg');
+            storageRef.ref().child('eventManagement/$newImageFile.jpg');
         UploadTask uploadTask = storageRef_.putFile(imageFile!);
         imageURL = await (await uploadTask).ref.getDownloadURL();
       } else {
@@ -96,7 +95,7 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
       }
       var data = {
         "uid": user!.uid,
-        "category": "House Essential",
+        "category": "Event Management",
         "businessType": selectedBusinessType,
         "imagePath": (imageURL != null)
             ? imageURL
@@ -122,9 +121,9 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
         "visibility": true
       };
 
-      if (widget.businessID.isEmpty) {
+      if (widget.businessId.isEmpty) {
         await firestore
-            .collection('houseEssentials')
+            .collection('eventManagement')
             .add(data)
             .then((DocumentReference value) => {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -147,8 +146,8 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
           await deleteExistingImage(existingImageFile);
         }
         await firestore
-            .collection('houseEssentials')
-            .doc(widget.businessID)
+            .collection('eventManagement')
+            .doc(widget.businessId)
             .update(data)
             .then(
               (value) => {
@@ -182,9 +181,6 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
             );
       }
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   deleteExistingImage(String? imageName) async {
@@ -197,12 +193,13 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 75, 93, 102),
         title: Text(
-          'House Essentials',
+          'EVENTS',
           style: Theme.of(context)
               .textTheme
               .displayLarge!
               .copyWith(color: Colors.white70),
         ),
+        centerTitle: true,
         actions: [GoToHomeView()],
         foregroundColor: Colors.amber,
       ),
@@ -214,7 +211,6 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
             )
           : SingleChildScrollView(
               child: Container(
-                // alignment: Alignment.topCenter,
                 padding: const EdgeInsets.only(right: 10, left: 10),
                 child: Form(
                   key: _formKey,
@@ -222,7 +218,6 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
                     padding: const EdgeInsets.all(5.0),
                     child: Column(
                       children: [
-                        // Contact Information
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -293,6 +288,7 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
                         const SizedBox(
                           height: 20,
                         ),
+
                         // Business Type
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,7 +297,7 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
                             DropdownButton(
                               isExpanded: true,
                               value: selectedBusinessType,
-                              items: houseEssentials.map((value) {
+                              items: eventManagement.map((value) {
                                 return DropdownMenuItem(
                                     value: value, child: Text(value));
                               }).toList(),
@@ -469,7 +465,6 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
                         const SizedBox(
                           height: 10,
                         ),
-
                         // Social Media Details
                         Container(
                           padding: const EdgeInsets.all(5),
@@ -554,7 +549,7 @@ class _HouseEssentialsView extends ConsumerState<HouseEssentialsView> {
                               backgroundColor: Colors.lightBlueAccent,
                               foregroundColor: Colors.white),
                           child: Text(
-                            widget.businessID.isEmpty ? "SUBMIT" : "UPDATE",
+                            widget.businessId.isEmpty ? "SUBMIT" : "UPDATE",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),

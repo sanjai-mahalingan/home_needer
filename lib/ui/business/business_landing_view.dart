@@ -86,7 +86,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
                   onNavigation: () {
-                    onNavigation(context, 'houseEssentialView');
+                    onNavigation(context, 'createHouseEssentialView');
                   },
                 ),
                 const SizedBox(
@@ -102,7 +102,9 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
-                  onNavigation: () {},
+                  onNavigation: () {
+                    onNavigation(context, "createEventView");
+                  },
                 ),
                 const SizedBox(
                   height: 10,

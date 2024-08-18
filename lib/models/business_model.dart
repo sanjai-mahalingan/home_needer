@@ -18,12 +18,12 @@ const houseEssentials = [
 ];
 
 const eventManagement = [
+  "Photography",
   "Social Events",
   "Professional Events",
   "Cultural Events",
   "Sporting Events",
   "Educational Events",
-  "Photography",
   "Catering",
   "Tent and Banquet Chair",
   "Stage Decoration",
