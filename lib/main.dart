@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:home_needer/ui/business/business_landing_view.dart';
 import 'package:home_needer/ui/index_view.dart';
 import 'package:home_needer/ui/auth/login_view.dart';
 import 'package:home_needer/ui/profile/profile_view.dart';
@@ -30,6 +31,9 @@ class MainApp extends ConsumerWidget {
           displayLarge: const TextStyle(
               fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
 
+          displayMedium:
+              GoogleFonts.hind(fontSize: 24, fontWeight: FontWeight.bold),
+
           // headlines
           titleLarge:
               GoogleFonts.oswald(fontSize: 18, fontStyle: FontStyle.italic),
@@ -51,6 +55,7 @@ class MainApp extends ConsumerWidget {
         "profileView": (context) => const ProfileView(
               userId: '',
             ),
+        "businessLandingView": (context) => BusinessLandingView(),
       },
     );
   }

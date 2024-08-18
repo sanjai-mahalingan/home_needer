@@ -94,11 +94,11 @@ class _SideNav extends ConsumerState<SideNav> {
         ListTile(
           leading: const Icon(Icons.add),
           title: Text(
-            'Create New Trip',
+            'Add New Business',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           onTap: () {
-            Navigator.popAndPushNamed(context, 'createTripView');
+            Navigator.popAndPushNamed(context, 'businessLandingView');
           },
         )
       ],

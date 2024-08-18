@@ -1,4 +1,5 @@
 const indiaStateList = [
+  "Tamil Nadu",
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -21,7 +22,6 @@ const indiaStateList = [
   "Punjab",
   "Rajasthan",
   "Sikkim",
-  "Tamil Nadu",
   "Telangana",
   "Tripura",
   "Uttar Pradesh",

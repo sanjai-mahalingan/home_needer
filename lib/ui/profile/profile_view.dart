@@ -27,8 +27,8 @@ class _ProfileView extends ConsumerState<ProfileView> {
   TextEditingController addressLine2 = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController zipCode = TextEditingController();
-  String? country = "India";
-  String? selectedState;
+  String country = "India";
+  String selectedState = 'Tamil Nadu';
 
   onProfileUpdate() async {
     if (_formKey.currentState!.validate()) {
@@ -76,9 +76,7 @@ class _ProfileView extends ConsumerState<ProfileView> {
   void initState() {
     super.initState();
     print("User Id on Init Stateeeeee ${widget.userId}");
-    setState(() {
-      isLoading = true;
-    });
+
     if (widget.userId != null && widget.userId != '') {
       initializeValue();
     }
@@ -104,7 +102,7 @@ class _ProfileView extends ConsumerState<ProfileView> {
         city.text = data["city"] ?? '';
         zipCode.text = data["zipCode"] ?? '';
         country = data["India"] ?? '';
-        selectedState = data["state"] ?? '';
+        selectedState = data["state"] ?? 'Tamil Nadu';
       });
     });
   }
@@ -300,18 +298,20 @@ class _ProfileView extends ConsumerState<ProfileView> {
                                 Expanded(
                                   child: DropdownButton(
                                     isExpanded: true,
-                                    value: selectedState ?? selectedState,
-                                    items: indiaStateList.map((value) {
-                                      return DropdownMenuItem(
-                                          value: value, child: Text(value));
-                                    }).toList(),
+                                    value: selectedState,
                                     onChanged: (value) {
                                       setState(() {
                                         selectedState = value!;
                                       });
                                     },
+                                    items: indiaStateList.map((String value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                             const SizedBox(

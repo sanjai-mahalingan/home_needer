@@ -56,7 +56,7 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
             setState(() {
               isLoading = false;
             });
-            Navigator.pushReplacementNamed(context, 'indexView');
+            Navigator.pushReplacementNamed(context, 'initialView');
             return;
           }
         });
@@ -170,6 +170,8 @@ class _RegistrationView extends ConsumerState<RegistrationView> {
                         controller: displayName,
                         keyboardType: TextInputType.name,
                         textInputAction: TextInputAction.next,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 156, 105, 16)),
                         decoration: const InputDecoration(
                           label: Text(
                             "Display Name",

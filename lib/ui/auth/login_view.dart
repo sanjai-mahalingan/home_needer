@@ -175,7 +175,7 @@ class _LoginView extends ConsumerState<LoginView> {
                             return "Password is required";
                           }
                           if (value.isNotEmpty && value.length <= 6) {
-                            return "Password must contains minimum 6 characters";
+                            return "Password must contains minimum 7 characters";
                           }
                           return null;
                         },
