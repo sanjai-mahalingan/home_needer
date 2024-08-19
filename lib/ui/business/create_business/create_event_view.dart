@@ -184,7 +184,7 @@ class _CreateEventView extends ConsumerState<CreateEventView> {
   }
 
   deleteExistingImage(String? imageName) async {
-    await storageRef.ref().child('constructions/$imageName').delete();
+    await storageRef.ref().child('eventManagement/$imageName').delete();
   }
 
   @override

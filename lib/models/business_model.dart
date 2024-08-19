@@ -31,10 +31,10 @@ const eventManagement = [
 ];
 
 const travels = [
-  "Travel Agencies / Tour Packers",
   "Hotels",
   "Cottages",
-  "Resorts"
+  "Resorts",
+  "Travel Agencies / Tour Packers"
 ];
 
 const financialProfessionals = [

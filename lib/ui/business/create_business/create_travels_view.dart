@@ -12,17 +12,16 @@ import 'package:home_needer/ui/initial_view.dart';
 import 'package:home_needer/widgets/go_to_home_view.dart';
 import 'package:home_needer/widgets/loader_view.dart';
 
-class CreateHouseEssentialsView extends ConsumerStatefulWidget {
-  const CreateHouseEssentialsView({super.key, required this.businessID});
+class CreateTravelsView extends ConsumerStatefulWidget {
+  const CreateTravelsView({super.key, required this.businessId});
 
-  final String businessID;
+  final String businessId;
 
   @override
-  ConsumerState<CreateHouseEssentialsView> createState() =>
-      _HouseEssentialsView();
+  ConsumerState<CreateTravelsView> createState() => _CreateTravelsView();
 }
 
-class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
+class _CreateTravelsView extends ConsumerState<CreateTravelsView> {
   final _formKey = GlobalKey<FormState>();
   FilePickerResult? fileResult;
   bool isLoading = false;
@@ -38,9 +37,8 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
   File? imageFile;
   String? networkImageFile;
 
-// Form Variables
-  String selectedBusinessType = 'Contractors';
-  // String selectedCountry = 'India';
+  // Form Variables
+  String selectedBusinessType = 'Hotels';
   String? selectedState = 'Tamil Nadu';
   TextEditingController businessName = TextEditingController();
   TextEditingController contactPhone = TextEditingController();
@@ -88,16 +86,16 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
       String? imageURL;
       if (imageFile != null) {
         newImageFile = DateTime.now().millisecondsSinceEpoch.toString();
-        final storageRef_ =
-            storageRef.ref().child('houseEssentials/$newImageFile.jpg');
+        final storageRef_ = storageRef.ref().child('travels/$newImageFile.jpg');
         UploadTask uploadTask = storageRef_.putFile(imageFile!);
         imageURL = await (await uploadTask).ref.getDownloadURL();
       } else {
         imageURL = null;
       }
+
       var data = {
         "uid": user!.uid,
-        "category": "House Essential",
+        "category": "Travels",
         "businessType": selectedBusinessType,
         "imagePath": (imageURL != null)
             ? imageURL
@@ -123,9 +121,9 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
         "visibility": true
       };
 
-      if (widget.businessID.isEmpty) {
+      if (widget.businessId.isEmpty) {
         await firestore
-            .collection('houseEssentials')
+            .collection('travels')
             .add(data)
             .then((DocumentReference value) => {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -148,8 +146,8 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
           await deleteExistingImage(existingImageFile);
         }
         await firestore
-            .collection('houseEssentials')
-            .doc(widget.businessID)
+            .collection('travels')
+            .doc(widget.businessId)
             .update(data)
             .then(
               (value) => {
@@ -189,7 +187,7 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
   }
 
   deleteExistingImage(String? imageName) async {
-    await storageRef.ref().child('houseEssentials/$imageName').delete();
+    await storageRef.ref().child('travels/$imageName').delete();
   }
 
   @override
@@ -198,7 +196,7 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 75, 93, 102),
         title: Text(
-          'HOUSE ESSENTIALS',
+          'Travels',
           style: Theme.of(context)
               .textTheme
               .displayLarge!
@@ -216,7 +214,6 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
             )
           : SingleChildScrollView(
               child: Container(
-                // alignment: Alignment.topCenter,
                 padding: const EdgeInsets.only(right: 10, left: 10),
                 child: Form(
                   key: _formKey,
@@ -246,7 +243,6 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
                         const SizedBox(
                           height: 20,
                         ),
-
                         // Business Image
                         Card(
                           color: Colors.amber[200],
@@ -303,7 +299,7 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
                             DropdownButton(
                               isExpanded: true,
                               value: selectedBusinessType,
-                              items: houseEssentials.map((value) {
+                              items: travels.map((value) {
                                 return DropdownMenuItem(
                                     value: value, child: Text(value));
                               }).toList(),
@@ -471,7 +467,6 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
                         const SizedBox(
                           height: 10,
                         ),
-
                         // Social Media Details
                         Container(
                           padding: const EdgeInsets.all(5),
@@ -556,7 +551,7 @@ class _HouseEssentialsView extends ConsumerState<CreateHouseEssentialsView> {
                               backgroundColor: Colors.lightBlueAccent,
                               foregroundColor: Colors.white),
                           child: Text(
-                            widget.businessID.isEmpty ? "SUBMIT" : "UPDATE",
+                            widget.businessId.isEmpty ? "SUBMIT" : "UPDATE",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),

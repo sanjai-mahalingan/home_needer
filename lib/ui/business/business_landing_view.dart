@@ -79,7 +79,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                   userId: user!.uid,
                   title: "House Essentials",
                   content:
-                      "'Register your business, like contractors, security systems, interior & exterior design, painting, cleaning etc.,.'",
+                      "Register your business, like contractors, security systems, interior & exterior design, painting, cleaning etc.,.",
                   icon: const Icon(
                     Icons.house,
                     size: 34,
@@ -96,7 +96,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                   userId: user.uid,
                   title: "Events",
                   content:
-                      "'Register your business, like event management, photography, catering, etc.,.'",
+                      "Register your business, like event management, photography, catering, etc.,.",
                   icon: const Icon(
                     Icons.event_seat_sharp,
                     size: 34,
@@ -113,13 +113,15 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                   userId: user.uid,
                   title: "Travels",
                   content:
-                      "'Register your business, like travel agencies, hotels, cottages, resorts.'",
+                      "Register your business, like travel agencies, hotels, cottages, resorts.",
                   icon: const Icon(
                     Icons.travel_explore,
                     size: 34,
                     color: Color.fromARGB(255, 122, 72, 156),
                   ),
-                  onNavigation: () {},
+                  onNavigation: () {
+                    onNavigation(context, "createTravelsView");
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -128,7 +130,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                   userId: user.uid,
                   title: "Financial Professionals",
                   content:
-                      "'Register your business, insurance, auditors, traders, banking.'",
+                      "Register your business, insurance, auditors, traders, banking.",
                   icon: const Icon(
                     Icons.attach_money,
                     size: 34,
@@ -143,7 +145,7 @@ class _BusinessLandingViewState extends ConsumerState<BusinessLandingView> {
                   userId: user.uid,
                   title: "Auto Mobiles",
                   content:
-                      "'Register your business, two wheeler, four wheeler, heavy vehicle services, towing services.'",
+                      "Register your business, two wheeler, four wheeler, heavy vehicle services, towing services.",
                   icon: const Icon(
                     Icons.car_repair,
                     size: 34,
