@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:home_needer/ui/business/business_landing_view.dart';
+import 'package:home_needer/ui/business/create_business/create_auto_mobile_view.dart';
 import 'package:home_needer/ui/business/create_business/create_event_view.dart';
+import 'package:home_needer/ui/business/create_business/create_financial_professionals_view.dart';
 import 'package:home_needer/ui/business/create_business/create_house_essentials_view.dart';
 import 'package:home_needer/ui/business/create_business/create_travels_view.dart';
 import 'package:home_needer/ui/index_view.dart';
@@ -32,7 +34,7 @@ class MainApp extends ConsumerWidget {
         textTheme: TextTheme(
           // app bar title
           displayLarge: const TextStyle(
-              fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
 
           displayMedium:
               GoogleFonts.hind(fontSize: 24, fontWeight: FontWeight.bold),
@@ -64,7 +66,14 @@ class MainApp extends ConsumerWidget {
               businessID: "",
             ),
         "createEventView": (context) => const CreateEventView(businessId: ""),
-        "createTravelsView": (context) => const CreateTravelsView(businessId: ""),
+        "createTravelsView": (context) =>
+            const CreateTravelsView(businessId: ""),
+        "createFinancialProfessionalView": (context) =>
+            const CreateFinancialProfessionalsView(
+              businessId: "",
+            ),
+        "createAutoMobileView": (context) =>
+            const CreateAutoMobileView(businessId: "")
       },
     );
   }
